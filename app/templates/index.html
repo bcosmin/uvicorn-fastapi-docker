@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FastAPI App</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+</head>
+<body>
+    <div class="container">
+        <h1>🚀 FastAPI</h1>
+        <p class="subtitle">Welcome to your FastAPI application</p>
+        
+        <div class="message-box">
+            <p><strong>Server Response:</strong></p>
+            <div class="response" id="response">Click a button to get started</div>
+        </div>
+        
+        <button onclick="fetchMessage()">Get Message</button>
+        <button onclick="fetchDocs()">View API Docs</button>
+        
+        <div class="loading" id="loading">
+            <div class="spinner"></div>
+            <p>Loading...</p>
+        </div>
+        
+        <div class="info">
+            <p>Built with FastAPI & Uvicorn</p>
+            <p><a href="/docs" style="color: #667eea; text-decoration: none;">Interactive API Documentation</a></p>
+        </div>
+    </div>
+    
+    <script>
+        async function fetchMessage() {
+            const responseDiv = document.getElementById('response');
+            const loading = document.getElementById('loading');
+            
+            loading.style.display = 'block';
+            
+            try {
+                const response = await fetch('/api/message');
+                const data = await response.json();
+                responseDiv.textContent = JSON.stringify(data, null, 2);
+            } catch (error) {
+                responseDiv.textContent = `Error: ${error.message}`;
+            } finally {
+                loading.style.display = 'none';
+            }
+        }
+        
+        function fetchDocs() {
+            window.open('/docs', '_blank');
+        }
+    </script>
+</body>
+</html>

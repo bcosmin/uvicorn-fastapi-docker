@@ -1,26 +1,50 @@
 # uvicorn-fastapi-docker
 
+A modern FastAPI application with a built-in web UI, served via Uvicorn.
+
 ## Install
 
-Install dependencies (choose one):
+Install dependencies via `uv`:
 
 ```bash
-# Install directly with pip
-pip install fastapi "uvicorn[standard]"
+uv sync
+```
 
-# Or install from this project (build system required)
-pip install .
+Or manually with pip:
+
+```bash
+pip install fastapi "uvicorn[standard]"
 ```
 
 ## Run
 
-Start the development server with:
+Activate the virtual environment and start the development server:
 
 ```bash
+source .venv/bin/activate
 uvicorn app.main:app --reload
 ```
 
-Open http://127.0.0.1:8000/ to see the app, and http://127.0.0.1:8000/docs for the OpenAPI docs.
+Open <http://127.0.0.1:8000/> to see the interactive UI, and <http://127.0.0.1:8000/docs> for the OpenAPI docs.
+
+## Project Structure
+
+```
+    app/
+    ├── main.py              # FastAPI application entry point
+    └── templates/
+        ├── index.html       # Main UI template
+        ├── css/
+        │   └── styles.css   # Stylesheet
+        └── js/
+```
+
+## Features
+
+- **Interactive Web UI** – A responsive, modern interface built with HTML/CSS
+- **API Endpoints** – JSON API endpoints ready for extension
+- **Auto-reload** – Development server reloads on code changes
+- **Docker Support** – Easily containerize and deploy
 
 ## Docker
 
@@ -36,12 +60,14 @@ Run the container (maps port 8000):
 docker run --rm -p 8000:8000 uvicorn-fastapi-docker:latest
 ```
 
-Or use Docker Compose for local development (bind-mounts source):
+Or use Docker Compose for local development:
 
 ```bash
 docker compose up --build
 ```
 
-Notes:
-- The `Dockerfile` installs `fastapi` and `uvicorn[standard]` in the image. If you prefer installing from `pyproject.toml`, update the Dockerfile to `pip install .` and ensure a proper `build-system` section is present.
-- I can't run Docker here; run the above commands locally to build and start the container.
+## Notes
+
+- The `Dockerfile` installs `fastapi` and `uvicorn[standard]` in the image.
+- CSS and static assets are served from the `/static` directory.
+- The API documentation is available at `/docs` (Swagger UI) and `/redoc` (ReDoc).

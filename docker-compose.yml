@@ -1,10 +1,19 @@
-version: "3.8"
 services:
   web:
     build: .
     ports:
       - "8000:8000"
-    volumes:
-      - ./:/app:cached
     environment:
       - PYTHONUNBUFFERED=1
+      # Enables FastAPI's auto-reload if you're not using it in the Dockerfile
+      - WATCHFILES_FORCE_POLLING=true
+    develop:
+      # Modern "Compose Watch" replaces basic volumes for better performance
+      watch:
+        - action: sync
+          path: ./app
+          target: /app/app
+          ignore:
+            - .venv/
+        - action: rebuild
+          path: ./pyproject.toml

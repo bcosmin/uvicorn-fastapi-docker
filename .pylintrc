@@ -1,0 +1,23 @@
+[MASTER]
+# Ignore the 'app' or 'venv' folders if necessary
+ignore=venv,env
+
+[MESSAGES CONTROL]
+# Disable specific warnings
+# C0114: Missing module docstring
+# C0115: Missing class docstring
+# C0116: Missing function docstring
+# E0401: Unable to import (Use this only if Pylint can't find your venv)
+disable=
+    C0114,
+    C0115,
+    C0116,
+    R0903, ; Too few public methods (common in Pydantic models)
+    W0613  ; Unused argument (common in FastAPI dependencies)
+
+[FORMAT]
+max-line-length=88 ; Matches 'Black' formatter standard
+
+[BASIC]
+# Good variable names that are usually too short for Pylint
+good-names=i,j,k,ex,Run,_,id,db,app

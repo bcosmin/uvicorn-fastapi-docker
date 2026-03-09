@@ -1,7 +1,38 @@
 [project]
 name = "uvicorn-fastapi-docker"
 version = "0.1.0"
-description = "Add your description here"
+description = "FastAPI application running on Uvicorn with Docker"
 readme = "README.md"
+authors = [{name = "Your Name", email = "your.email@example.com"}]
 requires-python = ">=3.11"
-dependencies = ["fastapi", "uvicorn[standard]"]
+dependencies = [
+    "fastapi",
+    "uvicorn[standard]",
+    "pydantic", # Recommended for FastAPI
+    "python-multipart", # Often needed for FastAPI forms
+]
+
+[dependency-groups]
+dev = [
+    "pylint",
+    "black", # Standard formatter
+    "httpx", # For testing FastAPI endpoints
+]
+
+[tool.pylint."MESSAGES CONTROL"]
+# C0114: Missing module docstring (Skipped per request)
+# C0115: Missing class docstring
+# C0116: Missing function docstring
+disable = [
+    "C0114",
+    "C0115",
+    "C0116",
+    "R0903", # Too few public methods (Common in Pydantic/FastAPI)
+    "W0613", # Unused argument (Common in FastAPI dependencies)
+]
+
+[tool.pylint.BASIC]
+good-names = ["i", "j", "k", "ex", "Run", "_", "id", "db", "app"]
+
+[tool.pylint.FORMAT]
+max-line-length = 88

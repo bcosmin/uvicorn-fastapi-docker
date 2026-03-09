@@ -1,0 +1,32 @@
+name: Pylint
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11"]
+    steps:
+    - uses: actions/checkout@v4
+
+    - name: Install uv
+      uses: astral-sh/setup-uv@v5
+      with:
+        # This links the cache to your lockfile
+        enable-cache: true
+        cache-dependency-glob: "uv.lock"
+        version: "latest"
+
+    - name: Set up Python ${{ matrix.python-version }}
+      run: uv python install ${{ matrix.python-version }}
+
+    - name: Install dependencies
+      # Installs everything in pyproject.toml including the dev group
+      run: uv sync --all-groups
+
+    - name: Analysing the code with pylint
+      # uv run ensures Pylint sees FastAPI and ignores C0114 via pyproject.toml
+      run: |
+        uv run pylint $(git ls-files '*.py')
